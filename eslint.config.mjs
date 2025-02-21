@@ -16,10 +16,10 @@ const compat = new FlatCompat({
 
 export default [
   ...compat.extends('eslint:recommended', 'plugin:react/recommended'),
-  { ignores: ['*.config.js'] },
+  { ignores: ['*.config.js', '.expo'] },
   {
     files: ["src/**/*.{js,jsx}", "App.js"],
-    ignores: ['*.config.js'],
+    ignores: ['*.config.js', '.expo'],
     settings: {
       react: {
         version: 'detect'
@@ -47,13 +47,12 @@ export default [
       quotes: ['error', 'single'],
       semi: ['error', 'never'],
       eqeqeq: 'error',
-      'no-console': 2,
       'no-unused-vars': 'warn',
       'no-trailing-spaces': 'error',
       'object-curly-spacing': ['error', 'always'],
       'arrow-spacing': ['error', { before: true, after: true }],
-      'react/props-types': false,
-      'react/react-in-jsx-scope': false,
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
       'react-native/no-unused-styles': 'warn',
       'react-native/split-platform-components': 'warn',
       'react-native/no-inline-styles': 'warn',

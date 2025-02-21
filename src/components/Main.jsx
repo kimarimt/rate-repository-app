@@ -1,10 +1,9 @@
-import Constants from 'expo-constants'
-import { StyleSheet, SafeAreaView } from 'react-native'
-import RepositoryList from './RepositoryList'
+import { StyleSheet, View } from 'react-native'
+import AppBar from './util/AppBar'
+import RepositoryList from './Repository/RepositoryList'
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Constants.statusBarHeight,
     flexGrow: 1,
     flexShrink: 1
   }
@@ -12,9 +11,10 @@ const styles = StyleSheet.create({
 
 const Main = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <AppBar />
       <RepositoryList />
-    </SafeAreaView>
+    </View>
   )
 }
 
