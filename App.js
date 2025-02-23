@@ -1,9 +1,17 @@
 import { StatusBar } from 'react-native'
+import { NativeRouter } from 'react-router-native'
 import Main from './src/components/Main'
 
 const App = () => (
   <>
-    <Main />
+    <NativeRouter
+      future={{
+        v7_relativeSplatPath: true,
+        v7_startTransition: true
+      }}
+    >
+      <Main />
+    </NativeRouter>
     <StatusBar style='auto' />
   </>
 )

@@ -1,9 +1,11 @@
 import { View, StyleSheet } from 'react-native'
 import RepositoryInfo from './RepositoryInfo'
 import Stats from '../Stats/Stats'
+import theme from '../../theme'
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: theme.colors.onPrimary,
     padding: 20
   },
 })

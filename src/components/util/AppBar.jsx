@@ -1,37 +1,42 @@
 import Constants from 'expo-constants'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
+import { Link } from 'react-router-native'
 import Text from './Text'
 import theme from '../../theme'
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.appBarBackground,
     paddingTop: Constants.statusBarHeight * 1.75,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 20
+    paddingHorizontal: 10,
+    paddingBottom: 20,
+    backgroundColor: theme.colors.appBarBackground,
   },
   heading: {
-    color: theme.colors.appBarHeading
+    color: theme.colors.onPrimary
+  },
+  link: {
+    padding: 10,
+    marginRight: 10,
   }
 })
 
 const AppBar = () => {
-  const handlePress = () => {
-    console.log('pressed')
-  }
+  const tabs = [
+    { text: 'Sign In', path: '/sign-in' },
+    { text: 'Repostories', path: '/' },
+  ]
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={handlePress}>
-        <Text
-          style={styles.heading}
-          fontWeight='bold'
-          fontSize='subheading'
-        >
-        Repositories
-        </Text>
-      </Pressable>
+      <ScrollView horizontal>
+        {tabs.map((tab, i) => (
+          <View key={i} style={styles.link}>
+            <Link to={tab.path}>
+              <Text fontSize='subheading' fontWeight='bold' style={styles.heading}>{tab.text}</Text>
+            </Link>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   )
 }
