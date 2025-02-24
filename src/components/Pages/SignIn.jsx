@@ -1,6 +1,7 @@
 import { StyleSheet, View, TextInput, Pressable } from 'react-native'
-import { useFormik } from 'formik'
+import { Formik } from 'formik'
 import Text from '../util/Text'
+import * as yup from 'yup'
 import theme from '../../theme'
 
 const styles = StyleSheet.create({
@@ -27,49 +28,89 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  error: {
+    color: '#9A4C5F',
+    marginTop: 5
+  },
+  inputError: {
+    borderColor: '#9A4C5F',
+    borderWidth: 2
+  }
 })
 
-const initialValues = {
-  username: '',
-  password: ''
-}
+const SignInSchema = yup.object().shape({
+  username: yup
+    .string()
+    .required('Username is required'),
+  password: yup
+    .string()
+    .required('Password is required')
+})
 
 const SignIn = () => {
-  const formik = useFormik({
-    initialValues,
-    onSubmit
-  })
-
-  const onSubmit = values => {
-    console.log(values)
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.form}>
-        <TextInput
-          placeholder='Username'
-          value={formik.values.username}
-          onChangeText={formik.handleChange('username')}
-          autoCapitalize='none'
-          style={styles.input}
-        />
-        <TextInput
-          placeholder='Password'
-          value={formik.values.password}
-          onChangeText={formik.handleChange('password')}
-          style={styles.input}
-          secureTextEntry
-        />
-        <Pressable style={styles.button} onPress={() => onSubmit(formik.values)}>
-          <Text
-            color='onPrimary'
-            fontWeight='bold'
-            fontSize='subheading'
-          >
-            Sign in
-          </Text>
-        </Pressable>
+        <Formik
+          initialValues={{
+            username: '',
+            password: ''
+          }}
+          validationSchema={SignInSchema}
+          onSubmit={(values, { resetForm }) => {
+            console.log(values)
+            resetForm()
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+            <View>
+              <TextInput
+                placeholder='Username'
+                autoCapitalize='none'
+                onChangeText={handleChange('username')}
+                onBlur={handleBlur('username')}
+                value={values.username}
+                style={[styles.input, errors.username && touched.password && styles.inputError]}
+              />
+              {errors.username && touched.username &&
+                <Text
+                  fontSize='subheading'
+                  style={styles.error}
+                >
+                  {errors.username}
+                </Text>
+              }
+              <TextInput
+                placeholder='Password'
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                value={values.password}
+                style={[styles.input, errors.password && touched.password && styles.inputError]}
+                secureTextEntry
+              />
+              {errors.password && touched.password &&
+                <Text
+                  fontSize='subheading'
+                  style={styles.error}
+                >
+                  {errors.password}
+                </Text>
+              }
+              <Pressable
+                onPress={handleSubmit}
+                style={styles.button}
+              >
+                <Text
+                  color='onPrimary'
+                  fontSize='subheading'
+                  fontWeight='bold'
+                >
+                  Sign In
+                </Text>
+              </Pressable>
+            </View>
+          )}
+        </Formik>
       </View>
     </View>
   )
