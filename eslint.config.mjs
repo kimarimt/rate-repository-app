@@ -55,7 +55,6 @@ export default [
       'react/prop-types': 'off',
       'react-native/no-unused-styles': 'warn',
       'react-native/split-platform-components': 'warn',
-      'react-native/no-inline-styles': 'warn',
       'react-native/no-raw-text': 'warn',
       'react-native/no-single-element-style-arrays': 'warn'
     }
