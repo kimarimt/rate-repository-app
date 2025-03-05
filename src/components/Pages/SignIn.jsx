@@ -4,6 +4,7 @@ import Text from '../shared/Text'
 import * as yup from 'yup'
 import useSignIn from '../../hooks/useSignIn'
 import theme from '../../theme'
+import { useNavigate } from 'react-router-native'
 
 const styles = StyleSheet.create({
   container: {
@@ -49,7 +50,8 @@ const SignInSchema = yup.object().shape({
 })
 
 const SignIn = () => {
-  const [signIn] = useSignIn()
+  const { signIn, authStorage, apolloClient } = useSignIn()
+  const navigate = useNavigate()
 
   return (
     <View style={styles.container}>
@@ -63,8 +65,10 @@ const SignIn = () => {
           onSubmit={async (values, { resetForm }) => {
             try {
               const { data } = await signIn(values)
-              console.log(data)
+              await authStorage.setAccessToken(data.authenticate.accessToken)
+              apolloClient.resetStore()
               resetForm()
+              navigate('/')
             } catch (e) {
               console.log(e)
             }
