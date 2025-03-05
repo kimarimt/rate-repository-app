@@ -1,8 +1,11 @@
 import Constants from 'expo-constants'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import { Link } from 'react-router-native'
+import { useQuery } from '@apollo/client'
 import Text from './Text'
 import theme from '../../theme'
+import useSignIn from './../../hooks/useSignIn'
+import { CURRENT_USER } from '../../graphql/queries'
 
 const styles = StyleSheet.create({
   container: {
@@ -20,22 +23,38 @@ const styles = StyleSheet.create({
   }
 })
 
+const AppBarLink = ({ text, path }) => (
+  <View style={styles.link}>
+    <Link to={path}>
+      <AppBarText text={text} />
+    </Link>
+  </View>
+)
+
+const AppBarText = ({ text }) =>
+  <Text fontSize='subheading' fontWeight='bold' style={styles.heading}>{text}</Text>
+
 const AppBar = () => {
-  const tabs = [
-    { text: 'Sign In', path: '/sign-in' },
-    { text: 'Repostories', path: '/' },
-  ]
+  const { data } = useQuery(CURRENT_USER)
+  const { authStorage, apolloClient } = useSignIn()
+
+  const signOut = async () => {
+    await authStorage.removeAccessToken()
+    await apolloClient.resetStore()
+  }
 
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
-        {tabs.map((tab, i) => (
-          <View key={i} style={styles.link}>
-            <Link to={tab.path}>
-              <Text fontSize='subheading' fontWeight='bold' style={styles.heading}>{tab.text}</Text>
-            </Link>
-          </View>
-        ))}
+        <AppBarLink text='Repositories' path='/' />
+        { data && data.me
+          ? (
+            <Pressable style={styles.link} onPress={signOut}>
+              <AppBarText text='Sign Out' />
+            </Pressable>
+          )
+          : <AppBarLink text='Sign In' path='/sign-in' />
+        }
       </ScrollView>
     </View>
   )
