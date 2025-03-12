@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 })
 
 const RepositoryItem = ({ repository }) => (
-  <View style={styles.container}>
+  <View testID='repositoryItem' style={styles.container}>
     <RepositoryInfo repository={repository} />
     <Stats repository={repository} />
   </View>

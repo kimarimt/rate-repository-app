@@ -15,10 +15,10 @@ const compat = new FlatCompat({
 })
 
 export default [
-  ...compat.extends('eslint:recommended', 'plugin:react/recommended'),
+  ...compat.extends('eslint:recommended', 'plugin:react/recommended', 'plugin:jest/recommended'),
   { ignores: ['*.config.js', '.expo'] },
   {
-    files: ["src/**/*.{js,jsx}", "App.js"],
+    files: ['src/**/*.{js,jsx}', 'App.js'],
     ignores: ['*.config.js', '.expo'],
     settings: {
       react: {

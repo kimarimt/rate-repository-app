@@ -37,6 +37,7 @@ const RepositoryInfo = ({ repository }) => (
   <View style={styles.infoContainer}>
     <View>
       <Image
+        testID='ownerAvatar'
         source={{ uri: repository.ownerAvatarUrl }}
         style={styles.avatarImage}
       />

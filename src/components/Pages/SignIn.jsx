@@ -53,6 +53,18 @@ const SignIn = () => {
   const { signIn, authStorage, apolloClient } = useSignIn()
   const navigate = useNavigate()
 
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      const { data } = await signIn(values)
+      await authStorage.setAccessToken(data.authenticate.accessToken)
+      apolloClient.resetStore()
+      resetForm()
+      navigate('/')
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.form}>
@@ -62,17 +74,7 @@ const SignIn = () => {
             password: ''
           }}
           validationSchema={SignInSchema}
-          onSubmit={async (values, { resetForm }) => {
-            try {
-              const { data } = await signIn(values)
-              await authStorage.setAccessToken(data.authenticate.accessToken)
-              apolloClient.resetStore()
-              resetForm()
-              navigate('/')
-            } catch (e) {
-              console.log(e)
-            }
-          }}
+          onSubmit={handleSubmit}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
             <View>
